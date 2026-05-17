@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { getDailyProgress, getWeeklyAnalytics } from "@/actions/tracking";
@@ -6,6 +7,16 @@ import UpgradeBanner from "@/components/UpgradeBanner";
 import GymCheckIn from "@/components/GymCheckIn";
 import WeeklyAnalytics from "@/components/WeeklyAnalytics";
 import DashboardNav from "@/components/DashboardNav";
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Track your daily protein intake, log your gym workouts, and monitor your weekly progress.",
+  robots: {
+    // Keep the user dashboard out of search indexes
+    index: false,
+    follow: false,
+  },
+};
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -33,7 +44,7 @@ export default async function DashboardPage() {
           <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-900/10 blur-[120px]" />
         </div>
 
-        {/* Main content — pt-16 clears the 56px (h-14) nav */}
+        {/* Main content — pt-20 clears the 56px (h-14) nav */}
         <main className="relative z-10 max-w-lg mx-auto px-4 pt-20 pb-24 flex flex-col gap-8">
           <header className="text-center">
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2 text-white">
@@ -45,27 +56,27 @@ export default async function DashboardPage() {
           </header>
 
           {/* Protein Tracker */}
-          <section className="animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out">
+          <section aria-label="Daily protein tracker">
             <ProteinTracker initialProtein={protein} goal={goal} isPremium={isPremium} />
           </section>
 
           {/* Upgrade Banner — free users only */}
           {!isPremium && (
-            <section className="animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out delay-100">
+            <section aria-label="Upgrade to premium">
               <UpgradeBanner />
             </section>
           )}
 
           {/* Gym Check-In */}
-          <section className="animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out delay-150">
+          <section aria-label="Daily workout check-in">
             <div className="w-full p-8 rounded-[2rem] bg-slate-900/50 border border-slate-800/60 text-center flex flex-col items-center">
-              <h3 className="text-xl font-bold text-slate-300 mb-6">Daily Workout</h3>
+              <h2 className="text-xl font-bold text-slate-300 mb-6">Daily Workout</h2>
               <GymCheckIn initialCompleted={gymCompleted} />
             </div>
           </section>
 
-          {/* Weekly Analytics — locked overlay for free users */}
-          <section className="animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out delay-200">
+          {/* Weekly Analytics */}
+          <section aria-label="Weekly analytics">
             <WeeklyAnalytics
               isPremium={isPremium}
               proteinByDay={proteinByDay}
