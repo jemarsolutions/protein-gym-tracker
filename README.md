@@ -1,4 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Protein Gym Tracker
+
+A sleek web application for tracking protein intake and gym workouts, built with modern serverless technologies.
+
+**Why Neon?**
+
+We chose Neon because its decoupled, serverless architecture provides autoscaling, low‑latency connections, and eliminates the need for separate connection pooling. This design simplifies our deployment pipeline and reduces operational overhead. The serverless Postgres instance aligns perfectly with our Next.js edge runtime for seamless data access.
+
+## Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Authentication**: next-auth with PostgreSQL adapter
+- **Database**: Neon Serverless Postgres (`@neondatabase/serverless`)
+- **Payments**: Stripe (`stripe`)
+- **Icons**: lucide-react
+- **Environment**: dotenv
+- **Additional**: @auth/pg-adapter, next-themes
+
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+Visit `http://localhost:3000` to explore the app.
+
 
 ## Getting Started
 
