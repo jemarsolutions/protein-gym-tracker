@@ -3,11 +3,14 @@
 import { auth } from "@/auth";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-04-22.dahlia", // Using standard stable API version
-});
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: "2026-04-22.dahlia",
+  });
+}
 
 export async function createCheckoutSession() {
+  const stripe = getStripe();
   const session = await auth();
   if (!session?.user?.id) {
     throw new Error("Unauthorized");

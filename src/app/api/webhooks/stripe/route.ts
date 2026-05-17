@@ -2,12 +2,14 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { pool } from "@/db";
 
-// Initialize Stripe with your Secret Key
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2026-04-22.dahlia", // Use the latest API version or your account's default
-});
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: "2026-04-22.dahlia",
+  });
+}
 
 export async function POST(req: Request) {
+  const stripe = getStripe();
   try {
     // Read the raw body as text for Stripe signature verification
     const body = await req.text();
