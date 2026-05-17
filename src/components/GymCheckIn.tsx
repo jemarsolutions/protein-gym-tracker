@@ -30,20 +30,20 @@ export default function GymCheckIn({ initialCompleted }: { initialCompleted: boo
       <button
         onClick={handleCheckIn}
         disabled={completed || isPending}
-        className={`group relative flex flex-col items-center justify-center w-40 h-40 rounded-[2.5rem] transition-all duration-500 shadow-xl border-4 ${
+        className={`group relative flex flex-col items-center justify-center w-40 h-40 rounded-[2.5rem] transition-all duration-500 shadow-md dark:shadow-xl border-4 ${
           completed
-            ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-400 cursor-default"
-            : "bg-slate-800 hover:bg-slate-700 border-slate-700 hover:border-emerald-500/50 text-slate-300 hover:text-emerald-400 active:scale-95"
+            ? "bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500/30 dark:border-emerald-500/50 text-emerald-650 dark:text-emerald-400 cursor-default"
+            : "bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 active:scale-95"
         }`}
       >
         {/* Glow effect */}
         {!completed && (
-          <div className="absolute inset-0 bg-emerald-500/0 group-hover:bg-emerald-500/10 rounded-[2.5rem] transition-colors duration-500" />
+          <div className="absolute inset-0 bg-emerald-500/0 group-hover:bg-emerald-500/5 dark:group-hover:bg-emerald-500/10 rounded-[2.5rem] transition-colors duration-500" />
         )}
 
         {completed ? (
           <div className="flex flex-col items-center animate-in zoom-in duration-300">
-            <CheckCircle2 className="w-16 h-16 mb-2 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]" />
+            <CheckCircle2 className="w-16 h-16 mb-2 drop-shadow-[0_0_15px_rgba(16,185,129,0.3)] dark:drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]" />
             <span className="font-bold text-lg">Crushed it!</span>
           </div>
         ) : (
@@ -54,7 +54,7 @@ export default function GymCheckIn({ initialCompleted }: { initialCompleted: boo
         )}
       </button>
 
-      <p className="mt-6 text-sm font-medium text-slate-500">
+      <p className="mt-6 text-sm font-medium text-slate-500 dark:text-slate-400">
         {completed
           ? "You've already logged your workout for today."
           : "Tap the dumbbell to log your workout."}

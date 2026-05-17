@@ -37,20 +37,20 @@ export default async function DashboardPage() {
       />
 
       {/* Page background */}
-      <div className="min-h-screen bg-slate-950 text-slate-50 font-sans selection:bg-emerald-500/30">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 font-sans selection:bg-emerald-500/30">
         {/* Decorative ambient glows */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none -z-0">
-          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-900/10 blur-[120px]" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-900/10 blur-[120px]" />
+          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-500/5 dark:bg-emerald-900/10 blur-[120px]" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-cyan-500/5 dark:bg-cyan-900/10 blur-[120px]" />
         </div>
 
         {/* Main content — pt-20 clears the 56px (h-14) nav */}
         <main className="relative z-10 max-w-lg mx-auto px-4 pt-20 pb-24 flex flex-col gap-8">
           <header className="text-center">
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2 text-white">
+            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-2 text-slate-900 dark:text-white">
               Dashboard
             </h1>
-            <p className="text-slate-400 font-medium text-lg">
+            <p className="text-slate-500 dark:text-slate-400 font-medium text-lg">
               Track your progress, crush your goals.
             </p>
           </header>
@@ -69,8 +69,8 @@ export default async function DashboardPage() {
 
           {/* Gym Check-In */}
           <section aria-label="Daily workout check-in">
-            <div className="w-full p-8 rounded-[2rem] bg-slate-900/50 border border-slate-800/60 text-center flex flex-col items-center">
-              <h2 className="text-xl font-bold text-slate-300 mb-6">Daily Workout</h2>
+            <div className="w-full p-8 rounded-[2rem] bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800/60 text-center flex flex-col items-center shadow-lg dark:shadow-2xl">
+              <h2 className="text-xl font-bold text-slate-750 dark:text-slate-300 mb-6">Daily Workout</h2>
               <GymCheckIn initialCompleted={gymCompleted} />
             </div>
           </section>
