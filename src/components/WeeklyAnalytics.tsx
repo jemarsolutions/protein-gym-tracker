@@ -19,12 +19,19 @@ function getDayLabel(dateStr: string) {
   return d.toLocaleDateString("en-US", { weekday: "short" });
 }
 
+function formatLocalDate(d: Date) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
 function getLast7Days() {
   const days = [];
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
-    days.push(d.toISOString().split("T")[0]);
+    days.push(formatLocalDate(d));
   }
   return days;
 }
