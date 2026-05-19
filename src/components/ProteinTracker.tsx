@@ -25,9 +25,17 @@ export default function ProteinTracker({ initialProtein, goal: initialGoal, isPr
   const percentage = Math.min((optimisticProtein / goal) * 100, 100);
 
   const handleAddProtein = (amount: number, source: string) => {
+    if (amount < 0 && optimisticProtein <= 0) {
+      return;
+    }
+
     startTransition(async () => {
       addOptimisticProtein(amount);
-      await logProtein(source, amount);
+      try {
+        await logProtein(source, amount);
+      } catch {
+        addOptimisticProtein(-amount);
+      }
     });
   };
 
@@ -165,7 +173,8 @@ export default function ProteinTracker({ initialProtein, goal: initialGoal, isPr
         <div className="flex items-center gap-4 bg-slate-100 dark:bg-slate-950/40 p-2 rounded-[1.5rem] border border-slate-200 dark:border-slate-800/50 shadow-inner">
           <button 
             onClick={() => handleAddProtein(-5, "Adjust")}
-            className="p-4 bg-white dark:bg-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-transparent rounded-2xl text-slate-700 dark:text-slate-300 transition-all active:scale-90 shadow-sm"
+            disabled={optimisticProtein <= 0 || isPending}
+            className="p-4 bg-white dark:bg-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-transparent rounded-2xl text-slate-700 dark:text-slate-300 transition-all active:scale-90 shadow-sm disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100"
           >
             <Minus className="w-5 h-5" />
           </button>

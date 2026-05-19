@@ -13,12 +13,30 @@ export async function logProtein(mealName: string, proteinGrams: number) {
 
   const userId = session.user.id;
 
+  let gramsToLog = Math.round(proteinGrams);
+  if (gramsToLog === 0) {
+    return { success: true };
+  }
+
+  if (gramsToLog < 0) {
+    const currentRes = await pool.query(
+      `SELECT COALESCE(SUM(protein_grams), 0)::int AS total
+       FROM protein_logs
+       WHERE user_id = $1 AND date = CURRENT_DATE`,
+      [userId]
+    );
+    const currentTotal = Number(currentRes.rows[0]?.total ?? 0);
+    gramsToLog = Math.max(gramsToLog, -currentTotal);
+    if (gramsToLog === 0) {
+      return { success: true };
+    }
+  }
+
   try {
-    // Using parameterized queries ($1, $2, etc.) to prevent SQL injection
     await pool.query(
       `INSERT INTO protein_logs (user_id, meal_name, protein_grams, date)
        VALUES ($1, $2, $3, CURRENT_DATE)`,
-      [userId, mealName, proteinGrams]
+      [userId, mealName, gramsToLog]
     );
 
     // Revalidate the dashboard so it immediately shows the new data
@@ -40,7 +58,16 @@ export async function logGymCheckIn(notes: string = "") {
   const userId = session.user.id;
 
   try {
-    // Parameterized query for gym logs
+    const existing = await pool.query(
+      `SELECT id FROM gym_logs
+       WHERE user_id = $1 AND date = CURRENT_DATE AND workout_completed = true
+       LIMIT 1`,
+      [userId]
+    );
+    if (existing.rowCount && existing.rowCount > 0) {
+      return { success: true, alreadyCheckedIn: true };
+    }
+
     await pool.query(
       `INSERT INTO gym_logs (user_id, workout_completed, notes, date)
        VALUES ($1, true, $2, CURRENT_DATE)`,
@@ -68,8 +95,8 @@ export async function getDailyProgress() {
   try {
     // 1. Get today's total protein
     const proteinRes = await pool.query(
-      `SELECT SUM(protein_grams) as total_protein 
-       FROM protein_logs 
+      `SELECT GREATEST(COALESCE(SUM(protein_grams), 0), 0)::int AS total_protein
+       FROM protein_logs
        WHERE user_id = $1 AND date = CURRENT_DATE`,
       [userId]
     );
@@ -91,7 +118,7 @@ export async function getDailyProgress() {
       [userId]
     );
 
-    const totalProtein = parseInt(proteinRes.rows[0]?.total_protein || "0");
+    const totalProtein = Number(proteinRes.rows[0]?.total_protein ?? 0);
     const gymCompleted = gymRes.rowCount ? gymRes.rowCount > 0 : false;
     const goal = userRes.rows[0]?.daily_protein_goal || 150;
     const isPremium = userRes.rows[0]?.is_premium || false;
